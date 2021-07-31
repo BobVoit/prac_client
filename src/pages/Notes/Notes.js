@@ -6,7 +6,9 @@ import {
     getAllNotes, 
     addNewNote, 
     updateNote, 
-    changeCompleted 
+    changeCompleted,
+    deleteNoteById,
+    updateImage
 } from '../../redux/notesReducer';
 
 import ListNotes from '../../components/ListNotes/ListNotes';
@@ -52,6 +54,8 @@ class Notes extends Component {
                                 notes={this.props.notes}
                                 updateNote={this.props.updateNote}
                                 changeCompleted={this.props.changeCompleted}
+                                deleteNote={this.props.deleteNote}
+                                updateImage={this.props.updateImage}
                             />
                         </div>
                     </div>
@@ -60,6 +64,7 @@ class Notes extends Component {
                     open={this.state.openCreateNoteWindow}
                     onClose={this.closeWindow}
                     action={this.props.addNewNote}
+                    setImage={this.props.updateImage}
                 />
             </div>
         )
@@ -74,5 +79,7 @@ export default connect(mapStateToProps, {
     getAllNotes,
     addNewNote,
     updateNote,
-    changeCompleted
+    changeCompleted,
+    deleteNote: deleteNoteById,
+    updateImage
 })(Notes);

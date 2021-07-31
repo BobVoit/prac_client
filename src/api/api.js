@@ -23,8 +23,13 @@ export const notesAPI = {
         return instance.get(`/notes/delete/${id}`);
     },
     changeCompleted(id, completed) {
-        return instance.pos(`/notes/completed/${id}`, {
+        return instance.post(`/notes/completed/${id}`, {
             completed
         })
+    },
+    updateImage(id, image) {
+        const data = new FormData();
+        data.append('image', image, image.name);
+        return instance.post(`/notes/image/update/${id}`, data);
     }
 };

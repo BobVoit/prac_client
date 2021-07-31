@@ -1,12 +1,17 @@
+import { useState } from 'react';
 import styles from './FormNote.module.scss';
 import { useFormik } from 'formik';
+import imageSVG from '../../assets/images/image.svg';
 
 
-const FormNote = ({ open, onClose, action, update, note }) => {
+const FormNote = ({ open, onClose, action, update, note, setImage }) => {
+    const [addImage, setAddImage] = useState(false);
+
     const formik = useFormik({
         initialValues: {
             importance: update ? note?.importance : 0,
             text: update ? note?.text : '',
+            image: null
         },
         onSubmit: values => {   
             action({ 
@@ -14,9 +19,20 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                 importance: values.importance,
                 id: note.id
             });
-            onClose();
+            // onClose();
+            setAddImage(true);
         },
     });
+
+    const setImageForNote = (e) => {
+        if (e.target.files.length) {
+            setImage({ 
+                id: note.id, 
+                image: e.target.files[0] 
+            });
+        }
+        onClose();
+    }
     
     if (open) {
         document.body.classList.add('lock');
@@ -51,7 +67,7 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                                     type="radio" 
                                     value="0" 
                                     name="importance"
-                                    checked={formik.values.importance == 0}
+                                    checked={formik.values.importance === 0}
                                     onChange={formik.handleChange}
                                 />
                                 0
@@ -61,7 +77,7 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                                     type="radio" 
                                     value="1" 
                                     name="importance"
-                                    checked={formik.values.importance == 1}
+                                    checked={formik.values.importance === 1}
                                     onChange={formik.handleChange}
                                 />
                                 1
@@ -71,7 +87,7 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                                     type="radio" 
                                     value="2" 
                                     name="importance"
-                                    checked={formik.values.importance == 2}
+                                    checked={formik.values.importance === 2}
                                     onChange={formik.handleChange}
                                 />
                                 2
@@ -81,7 +97,7 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                                     type="radio" 
                                     value="3" 
                                     name="importance"
-                                    checked={formik.values.importance == 3}
+                                    checked={formik.values.importance === 3}
                                     onChange={formik.handleChange}
                                 />
                                 3
@@ -91,7 +107,7 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                                     type="radio" 
                                     value="4" 
                                     name="importance"
-                                    checked={formik.values.importance == 4}
+                                    checked={formik.values.importance === 4}
                                     onChange={formik.handleChange}
                                 />
                                 4
@@ -101,7 +117,7 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                                     type="radio" 
                                     value="5" 
                                     name="importance"
-                                    checked={formik.values.importance == 5}
+                                    checked={formik.values.importance === 5}
                                     onChange={formik.handleChange}
                                 />
                                 5
@@ -124,7 +140,34 @@ const FormNote = ({ open, onClose, action, update, note }) => {
                         >Записать</button>
                     </div>
                 </form>
-
+                {(addImage || (update && !note?.image)) && <div className={styles.imageAddWrapper}>
+                    <div>Добавить изображение?</div>
+                    <label className={styles.addImage}>
+                        <img
+                            alt="logo"
+                            src={imageSVG}
+                        />
+                        <input 
+                            hidden
+                            type="file" 
+                            onChange={setImageForNote}
+                        />
+                    </label>
+                </div>}
+                {(update && note?.image) && <div className={styles.imageAddWrapper}>
+                    <div>Изменить изображение</div>
+                    <label className={styles.addImage}>
+                        <img
+                            alt="logo"
+                            src={imageSVG}
+                        />
+                        <input 
+                            hidden
+                            type="file" 
+                            onChange={setImageForNote}
+                        />
+                    </label>
+                </div>}
             </div>
         </div>
     )
