@@ -2,18 +2,27 @@ import styles from './FormNote.module.scss';
 import { useFormik } from 'formik';
 
 
-const FormNote = ({ open, onClose }) => {
-
+const FormNote = ({ open, onClose, action, update, note }) => {
     const formik = useFormik({
         initialValues: {
-            importance: 0,
-            text: '',
+            importance: update ? note?.importance : 0,
+            text: update ? note?.text : '',
         },
-        onSubmit: values => {
-          alert(JSON.stringify(values, null, 2));
+        onSubmit: values => {   
+            action({ 
+                text: values.text, 
+                importance: values.importance,
+                id: note.id
+            });
+            onClose();
         },
     });
-
+    
+    if (open) {
+        document.body.classList.add('lock');
+    } else {
+        document.body.classList.remove('lock');
+    }
     return (
         <div
             className={styles.wrapper + " " + (open ? styles.open : "")}
@@ -105,6 +114,7 @@ const FormNote = ({ open, onClose }) => {
                             className={styles.textNote}
                             name="text"
                             onChange={formik.handleChange}
+                            value={formik.values.text}
                         ></textarea>
                     </div>
                     <div className={styles.submitWrapper}>

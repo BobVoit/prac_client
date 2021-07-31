@@ -1,17 +1,16 @@
 import styles from './Notes.module.scss';
 import { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { 
+    getAllNotes, 
+    addNewNote, 
+    updateNote, 
+    changeCompleted 
+} from '../../redux/notesReducer';
 
 import ListNotes from '../../components/ListNotes/ListNotes';
 import FormNote from '../../components/FormNote/FormNote';
-
-const notes = [
-    { id: 1, text: 'Component. Are you OK?', importance: 4, dateCreated: '25.07.2021 22:47:28', dateUpdated: '25.07.2021  22:47:28'},
-    { id: 2, text: 'Component. Are you OK?', importance: 3, dateCreated: '25.07.2021 22:47:28', dateUpdated: '25.07.2021  22:47:28'},
-    { id: 3, text: 'Component. Are you OK? kfdgn kekrmlrektml verkldfgm ldfg, f.,g /.e, f', importance: 4, dateCreated: '25.07.2021 22:47:28', dateUpdated: '25.07.2021  22:47:28'},
-    { id: 4, text: 'Component. Are you OK?', importance: 2, dateCreated: '25.07.2021 22:47:28', dateUpdated: '25.07.2021  22:47:28'},
-    { id: 5, text: 'Component. Are you OK?', importance: 5, dateCreated: '25.07.2021 22:47:28', dateUpdated: '25.07.2021  22:47:28'},
-    { id: 6, text: 'Component. Are you OK?', importance: 1, dateCreated: '25.07.2021 22:47:28', dateUpdated: '25.07.2021  22:47:28'},
-];
 
 class Notes extends Component {
     constructor(props) {
@@ -22,6 +21,10 @@ class Notes extends Component {
 
         this.openWindow = this.openWindow.bind(this);
         this.closeWindow = this.closeWindow.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.getAllNotes();
     }
 
     openWindow() {
@@ -46,7 +49,9 @@ class Notes extends Component {
                         </div>
                         <div className={styles.list}>
                             <ListNotes 
-                                notes={notes}
+                                notes={this.props.notes}
+                                updateNote={this.props.updateNote}
+                                changeCompleted={this.props.changeCompleted}
                             />
                         </div>
                     </div>
@@ -54,10 +59,20 @@ class Notes extends Component {
                 <FormNote 
                     open={this.state.openCreateNoteWindow}
                     onClose={this.closeWindow}
+                    action={this.props.addNewNote}
                 />
             </div>
         )
     }
 }
 
-export default Notes;
+const mapStateToProps = (state) => ({
+    notes: state.notes.notes,
+});
+
+export default connect(mapStateToProps, {
+    getAllNotes,
+    addNewNote,
+    updateNote,
+    changeCompleted
+})(Notes);
