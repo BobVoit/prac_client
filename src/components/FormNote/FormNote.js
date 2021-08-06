@@ -10,17 +10,16 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
     const formik = useFormik({
         initialValues: {
             importance: update ? note?.importance : 0,
-            text: update ? note?.text : '',
-            image: null
+            text: update ? note?.text : ''
         },
         onSubmit: values => {   
+            console.log(values);
             action({ 
                 text: values.text, 
                 importance: values.importance,
-                id: note.id
+                id: note?.id
             });
-            // onClose();
-            setAddImage(true);
+            onClose();
         },
     });
 
@@ -67,7 +66,7 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
                                     type="radio" 
                                     value="0" 
                                     name="importance"
-                                    checked={formik.values.importance === 0}
+                                    checked={formik.values.importance == 0}
                                     onChange={formik.handleChange}
                                 />
                                 0
@@ -77,7 +76,7 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
                                     type="radio" 
                                     value="1" 
                                     name="importance"
-                                    checked={formik.values.importance === 1}
+                                    checked={formik.values.importance == 1}
                                     onChange={formik.handleChange}
                                 />
                                 1
@@ -87,7 +86,7 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
                                     type="radio" 
                                     value="2" 
                                     name="importance"
-                                    checked={formik.values.importance === 2}
+                                    checked={formik.values.importance == 2}
                                     onChange={formik.handleChange}
                                 />
                                 2
@@ -97,7 +96,7 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
                                     type="radio" 
                                     value="3" 
                                     name="importance"
-                                    checked={formik.values.importance === 3}
+                                    checked={formik.values.importance == 3}
                                     onChange={formik.handleChange}
                                 />
                                 3
@@ -107,7 +106,7 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
                                     type="radio" 
                                     value="4" 
                                     name="importance"
-                                    checked={formik.values.importance === 4}
+                                    checked={formik.values.importance == 4}
                                     onChange={formik.handleChange}
                                 />
                                 4
@@ -117,7 +116,7 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
                                     type="radio" 
                                     value="5" 
                                     name="importance"
-                                    checked={formik.values.importance === 5}
+                                    checked={formik.values.importance == 5}
                                     onChange={formik.handleChange}
                                 />
                                 5
@@ -140,7 +139,7 @@ const FormNote = ({ open, onClose, action, update, note, setImage }) => {
                         >Записать</button>
                     </div>
                 </form>
-                {(addImage || (update && !note?.image)) && <div className={styles.imageAddWrapper}>
+                {(update && !note?.image) && <div className={styles.imageAddWrapper}>
                     <div>Добавить изображение?</div>
                     <label className={styles.addImage}>
                         <img

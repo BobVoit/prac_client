@@ -23,7 +23,7 @@ const notesReducer = (state = initialState, action) => {
         case SET_NEW_NOTE: {
             return {
                 ...state,
-                notes: [...state.notes, action.note],
+                notes: [action.note, ...state.notes],
             }
         }
         case SET_UPDATE_NOTE: {
